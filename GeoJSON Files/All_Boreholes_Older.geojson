@@ -1,0 +1,19 @@
+{
+"type": "FeatureCollection",
+"name": "All_Boreholes",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "id": 1, "x": 96.111, "y": 5.362, "Borehole_I": "BH001", "Depth": 3000, "Lithology": "Sandstone", "Porosity": 20, "Fluid_Satu": 80, "Oil_shows": "Moderate", "Gas_shows": "Low", "Blocks": "West-Block" }, "geometry": { "type": "Point", "coordinates": [ 96.111, 5.362 ] } },
+{ "type": "Feature", "properties": { "id": 2, "x": 96.204, "y": 5.368, "Borehole_I": "BH002", "Depth": 3200, "Lithology": "Shale", "Porosity": 5, "Fluid_Satu": 50, "Oil_shows": "Low", "Gas_shows": "Low", "Blocks": "Center-Block" }, "geometry": { "type": "Point", "coordinates": [ 96.204, 5.368 ] } },
+{ "type": "Feature", "properties": { "id": 3, "x": 96.206, "y": 5.286, "Borehole_I": "BH003", "Depth": 3400, "Lithology": "Limestone", "Porosity": 15, "Fluid_Satu": 60, "Oil_shows": "Low", "Gas_shows": "High", "Blocks": "South-Block" }, "geometry": { "type": "Point", "coordinates": [ 96.206, 5.286 ] } },
+{ "type": "Feature", "properties": { "id": 4, "x": 96.315, "y": 5.288, "Borehole_I": "BH004", "Depth": 3600, "Lithology": "Shale", "Porosity": 12, "Fluid_Satu": 75, "Oil_shows": "High", "Gas_shows": "Low", "Blocks": "East-Block" }, "geometry": { "type": "Point", "coordinates": [ 96.315, 5.288 ] } },
+{ "type": "Feature", "properties": { "id": 5, "x": 96.218, "y": 5.445, "Borehole_I": "BH005", "Depth": 3800, "Lithology": "Sandstone", "Porosity": 18, "Fluid_Satu": 80, "Oil_shows": "High", "Gas_shows": "Moderate", "Blocks": "North-Block" }, "geometry": { "type": "Point", "coordinates": [ 96.218, 5.445 ] } },
+{ "type": "Feature", "properties": { "id": 6, "x": 96.182, "y": 5.434, "Borehole_I": "BH006", "Depth": 4000, "Lithology": "Shale", "Porosity": 6, "Fluid_Satu": 40, "Oil_shows": "Low", "Gas_shows": "Low", "Blocks": "North-Block" }, "geometry": { "type": "Point", "coordinates": [ 96.182, 5.434 ] } },
+{ "type": "Feature", "properties": { "id": 7, "x": 96.092, "y": 5.328, "Borehole_I": "BH007", "Depth": 4200, "Lithology": "Limestone", "Porosity": 16, "Fluid_Satu": 65, "Oil_shows": "Low", "Gas_shows": "High", "Blocks": "West-Block" }, "geometry": { "type": "Point", "coordinates": [ 96.092, 5.328 ] } },
+{ "type": "Feature", "properties": { "id": 8, "x": 96.255, "y": 5.384, "Borehole_I": "BH008", "Depth": 4400, "Lithology": "Sandstone", "Porosity": 14, "Fluid_Satu": 70, "Oil_shows": "High", "Gas_shows": "Low", "Blocks": "Center-Block" }, "geometry": { "type": "Point", "coordinates": [ 96.255, 5.384 ] } },
+{ "type": "Feature", "properties": { "id": 9, "x": 96.168, "y": 5.307, "Borehole_I": "BH009", "Depth": 4600, "Lithology": "Sandstone", "Porosity": 19, "Fluid_Satu": 75, "Oil_shows": "High", "Gas_shows": "Moderate", "Blocks": "South-Block" }, "geometry": { "type": "Point", "coordinates": [ 96.168, 5.307 ] } },
+{ "type": "Feature", "properties": { "id": 10, "x": 96.294, "y": 5.317, "Borehole_I": "BH010", "Depth": 4800, "Lithology": "Shale", "Porosity": 7, "Fluid_Satu": 45, "Oil_shows": "Low", "Gas_shows": "Low", "Blocks": "East-Block" }, "geometry": { "type": "Point", "coordinates": [ 96.294, 5.317 ] } },
+{ "type": "Feature", "properties": { "id": 11, "x": 96.027, "y": 5.466, "Borehole_I": "BH011", "Depth": 5000, "Lithology": "Limestone", "Porosity": 17, "Fluid_Satu": 60, "Oil_shows": "Low", "Gas_shows": "High", "Blocks": null }, "geometry": { "type": "Point", "coordinates": [ 96.027, 5.466 ] } },
+{ "type": "Feature", "properties": { "id": 12, "x": 96.398, "y": 5.336, "Borehole_I": "BH012", "Depth": 5200, "Lithology": "Shale", "Porosity": 13, "Fluid_Satu": 70, "Oil_shows": "High", "Gas_shows": "Low", "Blocks": null }, "geometry": { "type": "Point", "coordinates": [ 96.398, 5.336 ] } }
+]
+}

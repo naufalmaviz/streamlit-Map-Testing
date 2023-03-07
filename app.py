@@ -7,8 +7,8 @@ from statistics import mean
 
 # Map libraries
 import folium
-from folium import plugins
-from folium.plugins import Search
+from folium import plugins, LinearColormap
+from folium.plugins import Search, FloatImage
 import geopandas as gpd
 import branca
 
@@ -27,7 +27,7 @@ import streamlit_nested_layout
 # Dataset
 All_Blocks = gpd.read_file(r'GeoJSON Files/All_Blocks.geojson')
 All_Boreholes = gpd.read_file(r'GeoJSON Files/All_Boreholes.geojson')
-
+All_Well_Logs = pd.read_csv('CSV Files/well_all_log.csv', sep = ';')
 
 # calculate the center of map
 bounds = All_Blocks.total_bounds
@@ -204,6 +204,24 @@ def make_popup_2(df):
     </html>
     """
     return html
+
+
+
+# creating well logs dataframe and plotting to graphs
+
+# logs = ['CALI', 'RDEP', 'GR', 'RHOB', 'NPHI', 'SP', 'DTC']
+# colors = ['black', 'firebrick', 'green', 'mediumaquamarine', 'royalblue', 'goldenrod', 'lightcoral']
+
+# def make_well_logs(df):
+#     depth = df['Depth']
+#     cali = df['CALI']
+#     rdep = df['RDEP']
+#     gr = df['GR']
+#     rhob = df['RHOB']
+#     nphi = df['NPHI']
+#     sp = df['SP']
+#     dtc = df['DTC']
+#     lithology = df['Lithology']
 
 text, display = st.columns([1,4])
 with text:
@@ -405,8 +423,7 @@ with text:
             data=csv,
             file_name='Data_map.csv'
         )
-        
-        
+               
 with display:
     st.markdown('<p class="spacing-font"> &nbsp; </p>',
                 unsafe_allow_html=True)
@@ -414,23 +431,97 @@ with display:
     map1 = folium.Map(location=location,
                     zoom_start=11, control_scale=300, tiles=None)
 
+    # Put DEM for the layer map
+    dem = folium.raster_layers.ImageOverlay(
+                            "TIF Files\BATNAS_NORTH_ACEH.png",
+                            name='BATNAS_NORTH_ACEH',
+                            bounds=[[5, 95], [10, 100]],
+                            opacity=0.7,
+                            interactive=True,
+                            cross_origin=False,
+                            show=False
+                            # colormap=lambda x: (1, 1, 1, x)
+                            ).add_to(map1)
+
+    dem2 = folium.raster_layers.ImageOverlay(
+                            "TIF Files\BATNAS_SOUTH_ACEH.png",
+                            bounds=[[0, 95], [5, 100]],
+                            name='BATNAS_SOUTH_ACEH',
+                            opacity=0.7,
+                            interactive=True,
+                            cross_origin=False,
+                            show=False
+                            # colormap=lambda x: (1, 1, 1, x)
+                            ).add_to(map1)
+    
+    # adding legend for DEM
+    color_map = LinearColormap(
+                            ['blue', 'green', 'yellow', 'red'],  # List of colors in the color map
+                            vmin=-3156,  # Minimum elevation value in your image
+                            vmax=2277,  # Maximum elevation value in your image
+                            )
+
+    color_map.caption = 'Elevation'
+    # Add the color map legend to the map
+    legend = FloatImage(
+                        color_map._repr_html_(), 
+                        bottom=10, left=10
+                        ).add_to(map1)
+    
     # Put ESRI Satellite for the layer map
     tile = folium.TileLayer(
-        tiles='https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-        attr='Esri',
-        name='Esri Satellite',
-        overlay=False,
-        control=False
-    ).add_to(map1)
+                            tiles='https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+                            attr='Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+                            name='Esri.WorldImagery',
+                            overlay=False,
+                            control=False,
+                            show=True
+                            ).add_to(map1)
 
+    
+    # Put Esri WorldTopoMap for the layer map
+
+    tile2 = folium.TileLayer(
+                            tiles='https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
+                            attr='Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community',
+                            name='Esri.WorldTopoMap',
+                            overlay=False,
+                            control=False,
+                            show=False
+                            ).add_to(map1)
+
+    # Put openstreetmap for the layer map
+
+    tile3 = folium.TileLayer(
+                            tiles='https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                            attr='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                            name='OpenStreetMap.Mapnik',
+                            overlay=False,
+                            control=False,
+                            show=False
+                            ).add_to(map1)
+
+
+    # Create a color bar legend and add it to the map
+    legend = LinearColormap(
+                            ['blue', 'cyan', 'yellow', 'red'],  # List of colors in the color map
+                            vmin=-3156,  # Minimum elevation value in your image
+                            vmax=2277,  # Maximum elevation value in your image
+                            caption='Elevation',  # Label for the color bar
+                            ).add_to(map1)
+
+    legend.caption = 'Elevation'
+        
     # put a minimap on bottom corner of the main map (optional, can be turned off) and other plugins such as szroll zoom toggler, fullscreen, etc
     minimap = plugins.MiniMap(toggle_display=True)
     map1.add_child(minimap)
+    plugins.GroupedLayerControl({"BATNAS": [dem, dem2], "OpenStreetMap": [tile3], "Esri": [tile2] }, 
+                                exclusive_groups=False,
+                                hideSingleBase=True).add_to(map1)
     plugins.ScrollZoomToggler().add_to(map1)
     plugins.Fullscreen(position="topright").add_to(map1)
     plugins.Draw(position='topright').add_to(map1)
-    
-    
+  
     # filter name blocks for showings
     def filter_by_name_blocks(df, parameter):
         return df[df['Block_Name'].isin(parameter)]
@@ -438,7 +529,10 @@ with display:
     # filter name boreholes for showings   
     def filter_by_name_boreholes(df, parameter):
         return df[df['Borehole_I'].isin(parameter)]
-    
+
+    # filter name well-log of boreholes for showings   
+    def filter_by_name_well_log(df, parameter):
+        return df[df['Borehole_I'].isin([parameter])]
     
     
     # option_block = st.multiselect('Select the block name', (All_Blocks['Block_Name']), default=All_Blocks['Block_Name'])
@@ -481,4 +575,47 @@ with display:
         (geo_json.add_to(map1))
     
                                                    
-    folium_static(map1, width=1350, height=800)
+    folium_static(map1, width=1500, height=700)
+    
+    st.markdown('<p class="big-font"> &nbsp; </p>',
+        unsafe_allow_html=True)
+
+# create container to contain well-log tables and graphs
+with st.container():
+    with st.expander('Well-log Data Display'):
+        # create option for well-log
+        option_well_log = st.selectbox('Select the well log', (All_Well_Logs['Borehole_I']).unique(), label_visibility='collapsed')
+        option_well_log_ = All_Well_Logs[All_Well_Logs['Borehole_I'].isin([option_well_log])]
+        
+        #calling function to filter what well-log data should be shown
+        df_filter_well_log = filter_by_name_well_log(option_well_log_, option_well_log)
+        
+        fig = make_subplots(rows=1, cols=7, shared_yaxes=True)
+
+        # Add each well log parameter as a separate trace in its own subplot
+        fig.add_trace(go.Scatter(x=df_filter_well_log['GR'], y=df_filter_well_log['Depth'],name='GR', line=dict(color='blue')), row=1, col=1)
+        fig.add_trace(go.Scatter(x=df_filter_well_log['CALI'], y=df_filter_well_log['Depth'], name='CALI', line=dict(color='red')), row=1, col=2)
+        fig.add_trace(go.Scatter(x=df_filter_well_log['RDEP'], y=df_filter_well_log['Depth'], name='RDEP', line=dict(color='green')), row=1, col=3)
+        fig.add_trace(go.Scatter(x=df_filter_well_log['RHOB'], y=df_filter_well_log['Depth'], name='RHOB', line=dict(color='purple')), row=1, col=4)
+        fig.add_trace(go.Scatter(x=df_filter_well_log['NPHI'], y=df_filter_well_log['Depth'], name='NPHI', line=dict(color='orange')), row=1, col=5)
+        fig.add_trace(go.Scatter(x=df_filter_well_log['SP'], y=df_filter_well_log['Depth'], name='SP', line=dict(color='black')), row=1, col=6)
+        fig.add_trace(go.Scatter(x=df_filter_well_log['DTC'], y=df_filter_well_log['Depth'], name='DTC', line=dict(color='pink')), row=1, col=7)
+
+        # Set the layout of the subplots grid
+        fig.update_layout(height=800, width=1200, title='Well Logs', xaxis=dict(title='Value'), yaxis=dict(title='Depth', autorange='reversed'))
+
+        st.markdown('<p class="big-font"> &nbsp; </p>',
+        unsafe_allow_html=True)
+
+        # Show the figure
+        st.plotly_chart(fig, theme="streamlit", use_container_width=True)
+        
+        
+        
+            
+        st.markdown('<p class="big-font"> &nbsp; </p>',
+        unsafe_allow_html=True)
+        
+        
+        
+    
