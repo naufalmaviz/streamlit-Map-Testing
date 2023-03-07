@@ -433,7 +433,7 @@ with display:
 
     # Put DEM for the layer map
     dem = folium.raster_layers.ImageOverlay(
-                            "TIF Files\BATNAS_NORTH_ACEH.png",
+                            "TIF Files/BATNAS_NORTH_ACEH.png",
                             name='BATNAS_NORTH_ACEH',
                             bounds=[[5, 95], [10, 100]],
                             opacity=0.7,
@@ -444,7 +444,7 @@ with display:
                             ).add_to(map1)
 
     dem2 = folium.raster_layers.ImageOverlay(
-                            "TIF Files\BATNAS_SOUTH_ACEH.png",
+                            "TIF Files/BATNAS_SOUTH_ACEH.png",
                             bounds=[[0, 95], [5, 100]],
                             name='BATNAS_SOUTH_ACEH',
                             opacity=0.7,
@@ -462,6 +462,7 @@ with display:
                             )
 
     color_map.caption = 'Elevation'
+    
     # Add the color map legend to the map
     legend = FloatImage(
                         color_map._repr_html_(), 
