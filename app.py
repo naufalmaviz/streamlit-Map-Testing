@@ -576,7 +576,7 @@ with display:
         (geo_json.add_to(map1))
     
                                                    
-    folium_static(map1, width=1500, height=700)
+    folium_static(map1, width=1300, height=700)
     
     st.markdown('<p class="big-font"> &nbsp; </p>',
         unsafe_allow_html=True)
